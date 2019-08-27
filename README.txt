@@ -1,2 +1,4 @@
 本地库和远程托管中心GITHUB交互
-lhc比ybq厉害
+push操作
+clone操作
+邀请成员加入团队
