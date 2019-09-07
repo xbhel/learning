@@ -17,6 +17,13 @@ Lambda：在Lisp，Python和Ruby等编程语言中，lambda是一个用于表示
 
 有三部分组成，左边是参数列表，右边是方法体，中间以逗号分隔
 
+**lambda表达式的几个重要特征**
+
+- 不需要声明参数的类型，编译器会自动推断
+- 只有一个参数时，()可以省略,即 param->{function body}
+- 如果function body 中只有一条语句，{}可以省略,即param->function body
+- 如果有返回值并且function body中只有一条语句，return可以省略，前提是你省略了{},否则必须使用return指定返回值
+
 ## 接下来我们看一段代码
 
 ```
