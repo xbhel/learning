@@ -140,9 +140,7 @@ public @interface FunctionalInterface {}
 
 在lambda表达式中我们并没有指定参数的类型，而编译还能够通过，这是因为函数式接口中只有一个确定的抽象方法，那么JVM可以通过类型推断来判断参数的类型
 
-
-
-
+end~~
 
 
 
