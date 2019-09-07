@@ -117,7 +117,10 @@ public @interface FunctionalInterface {}
 @FunctionalInterface 这个注解时一个通知性的注解，旨在定义使用了该注解的接口是一个函数式接口，通过阅读@FunctionalInterface 的说明，可以得到以下几个信息.
 
 - 从概念上来看，一个函数式接口中只能有唯一一个确定的抽象方法，当然，如果这个接口中重写了Object类中的抽象方法的话，它并不会给让接口中的抽象方法数量加一，即重新了Object类的抽象方法不会纳入函数式接口要求的统计中，这个接口还是一个函数式接口，原因是Object类是所有类的父类，接口的任何实现总会直接或间接的实现Object类的方法
+  - 如图，toString()方法是Object类的方法，所以并不会出现编译错误
   - ![lambda01](./lambda01.png)
+  - 如图，此时该接口中存在两个抽象方法，不满足函数式接口定义，编译不通过
+  - ![lambda02](./lambda02.png)
 
 - 使用了@FunctionalInterface 注解接口满足这两个要求，编译器就认为该接口是一个函数接口
   - 是一个接口，而不是注解，枚举或类
