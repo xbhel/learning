@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id='main' style="height: 700px;width: 1000px; margin: auto"></div>
+    <script src="dist/echarts.js"></script>
+    <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts图表
+        var myChart = echarts.init(document.getElementById('main'));
+        var option = {
+            grid: {
+                // show:true,
+                right: 220,
+                top: 100
+            },
+            xAxis: {
+                // scale: true 是否脱离零值
+                name: 'aaa',
+                splitLine: {
+                    lineStyle: {
+                        type: 'dashed'
+                    }
+                },
+                axisLine: {
+                    symbol: ['none', 'arrow'],
+                    lineStyle: {
+                        color: '#00adff',
+                        width: 2
+                    }
+                },
+                axisTick: {
+                    show: false
+                },
+                min: 0,
+                max: 100,
+                interval: 25 //强制设置坐标轴分割间隔。
+                // splitNumber:4, 坐标轴的分割段数，需要注意的是这个分割段数只是个预估值
+                // minInterval:25, 
+                // maxInterval:25
+            },
+            yAxis: {
+                // scale: true
+                name: 'aaa',
+                splitLine: {
+                    lineStyle: {
+                        type: 'dashed'
+                    }
+                },
+                axisLine: {
+                    lineStyle: {
+                        color: '#00adff',
+                        width: 2
+                    },
+                    symbol: ['none', 'arrow']
+                },
+                axisTick: {
+                    show: false
+                },
+                min: 0,
+                max: 100,
+                interval: 25 //强制设置坐标轴分割间隔
+                // minInterval:25, 自动计算的坐标轴最小间隔大小。
+                // maxInterval:25   自动计算的坐标轴最大间隔大小
+
+            },
+            tooltip: {},
+            series: [{
+                tooltip: {
+                    showContent: false, //tooltip 主题内容不显示
+                    formatter: function (param) { // 该series不显示 tooltip
+                        return;
+                    }
+                },
+                type: 'scatter',
+                symbolSize: [80, 30],//arr width height OR number 正方形
+                symbol: 'bar',
+                label: {
+                    show: true,
+                    formatter: function (param) {
+                        return '哈哈';
+                    },
+                    color: 'white',
+                    fontSize: 12,
+                    // padding:[0,10,0,10] ,
+                    // backgroundColor:'#ccc',
+                    fontWeight: 'bolder' //bold bolder normal
+                },
+                itemStyle: {
+                    color: {
+                        type: 'linear',
+                        x: 0,
+                        y: 0,
+                        x2: 0,
+                        y2: 1,
+                        colorStops: [{
+                            offset: 0, color: 'red' // 0% 处的颜色
+                        }, {
+                            offset: 1, color: 'blue' // 100% 处的颜色
+                        }],
+                        global: false // 缺省为 false
+                    },
+                    shadowColor: 'rgba(0, 0, 0, 0.5)',
+                    shadowBlur: 10,
+                    opacity: 0.5
+                },
+                data: [
+                    {
+                        value: [25, 25],
+                        label: {
+                            show: true,
+                            formatter: '经营提升'
+                        },
+                        tooltip: {
+                            formatter: function (param) { // 该item不显示 tooltip
+                                return;
+                            }
+                        }
+                    },
+                    [25, 75],
+                    [75, 25],
+                    [75, 75]
+                    // {
+                    //     value: [100, 100],
+                    //     // itemStyle:{
+                    //     //     opacity:0
+                    //     // }
+                    //     symbol: 'arrow'
+                    //     // symbolSize:[100,50]
+
+                    // }, {
+                    //     value: [0, 0],
+                    //     // itemStyle:{
+                    //     //     opacity:0
+                    //     // }
+                    //     symbol: 'arrow' //none
+                    // }
+                ],
+                markLine: {
+                    tooltip:{
+                         showContent:false,   
+                    },
+                    lineStyle: {
+                        normal: {
+                            type: 'dashed'
+                        }
+                    },
+                    data: [
+                        { type: 'average', name: '平均值' },
+                        { xAxis: 50 }
+                    ]
+                }
+            }, {
+                type: 'effectScatter',
+                symbol: 'circle',
+                symbolSize: 20,
+                label: {
+                    show: true,
+                    position: [20, -70],
+                    borderWidth: 1,
+                    padding: 10,
+                    borderRadius: [10, 10, 10, 10],
+                    borderColor: '#ccc',
+                    // offset:[50,50] ,
+                    // formatter: function (param) {
+                    //     return '哈哈\nsjjshd\njjjjj';
+                    // }
+                    formatter: [
+                        '{a|这段文本采用样式a}',
+                        '{b|采用样式b}用默认样式{x|用样式x}'
+                    ].join('\n'),
+                    rich: {
+                        a: {
+                            color: 'red',
+                            lineHeight: 10
+                        },
+                        b: {
+                            backgroundColor: {
+                                image: 'xxx/xxx.jpg'
+                            },
+                            height: 40
+                        },
+                        x: {
+                            fontSize: 18,
+                            fontFamily: 'Microsoft YaHei',
+                            borderColor: '#449933',
+                            borderRadius: 4
+                        },
+
+                    }
+                },
+                itemStyle: {
+                    normal: {
+                        shadowBlur: 10,
+                        shadowColor: 'rgba(120, 36, 50, 0.5)',
+                        shadowOffsetY: 5,
+                        // color:'rgb(251, 118, 123)'
+                        color: 'rgb(25, 183, 207)'
+
+                        // color: new echarts.graphic.RadialGradient(0.4, 0.3, 1, [{
+                        //     offset: 0,
+                        //     color: 'rgb(251, 118, 123)'
+                        // }, {
+                        //     offset: 1,
+                        //     color: 'rgb(204, 46, 72)'
+                        // }])
+
+                        // itemStyle: {
+                        //     normal: {
+                        //         shadowBlur: 10,
+                        //         shadowColor: 'rgba(25, 100, 150, 0.5)',
+                        //         shadowOffsetY: 5,
+                        //         color: new echarts.graphic.RadialGradient(0.4, 0.3, 1, [{
+                        //             offset: 0,
+                        //             color: 'rgb(129, 227, 238)'
+                        //         }, {
+                        //             offset: 1,
+                        //             color: 'rgb(25, 183, 207)'
+                        //         }])
+                        //     }
+                        // }
+                    }
+                },
+                data: [{
+                    value: [100, 100],
+                    tooltip: {}
+                }],
+            }]
+        };
+
+        myChart.setOption(option);
+
+    </script>
+</body>
+
+</html>
