@@ -54,6 +54,7 @@ Mockito是一个流行的mock框架，可以和JUnit一起结合使用，Mockito
 
 ![mock_execute_test](./mock_execute_test.png)
 
+
 ### 添加Mockito依赖
 - Gradle
 > repositories { jcenter() }
@@ -72,8 +73,182 @@ dependencies { testCompile "org.mockito:mockito-core:2.0.57-beta" }
 
 ### 简单使用
 ```
-
+	@Test
+    public void mockTest(){
+        // 创建 mock
+        List listMock = mock(List.class);
+        //定义mock行为
+        when(listMock.isEmpty()).thenReturn(false);
+        //断言
+        assertFalse(listMock.isEmpty());
+        //验证行为是否被mock实例调用
+        verify(listMock).isEmpty();
+    }
 ```
 
 ### Mockito API
-mock()
+
+- 创建mock对象
+
+  - 使用静态方法 mock -> ` public static <T> T mock(Class<T> classToMock)`
+  - 使用@Mock注解
+	如果你使用注解，那么必须要实例化 mock 对象。MockitoRule允许这个操作，Mockito 在遇到使用注解的字段的时候，它会调用MockitoAnnotations.initMocks(this) 来初始化该 mock 对象。另外也可以通过使用@RunWith(MockitoJUnitRunner.class)来达到相同的效果。
+```
+	@Mock
+    private  List<String> list;
+    //Creates rule instance that initiate <==>MockitoAnnotations.initMocks(this)
+    
+    @Rule
+    public MockitoRule mockitoRule = MockitoJUnit.rule();
+    
+     @Test
+    public void annotation_mock_test(){
+        when(list.isEmpty()).thenReturn(false);
+        assertFalse(list.isEmpty());
+        verify(list).isEmpty();
+    }
+	//===============================
+	@Mock
+    private  List<String> list;
+    
+	 @Test
+    public void annotation_mock_test(){
+        when(list.isEmpty()).thenReturn(false);
+        assertFalse(list.isEmpty());
+        verify(list).isEmpty();
+    }
+
+    @Before
+    public void setUp(){
+        MockitoAnnotations.initMocks(this);
+    }
+```
+
+- 配置Mock
+
+想要配置方法调用时的返回值，Mockito定义了流式(Fluent )API供我们方便调用~
+
+<table><tr><td bgcolor=#FFE4C4>`when(….).thenReturn(….)`可以被用来定义当条件满足时函数的返回值，如果你需要定义多个返回值，可以多次定义。</td></tr></table>当你多次调用函数的时候，Mockito 会根据你定义的先后顺序来返回返回值。Mocks 还可以根据传入参数的不同来定义不同的返回值。譬如说你的函数可以将`anyString` 或者 `anyInt`作为输入参数，然后定义其特定的放回值。
+
+example：
+
+```
+	@Test
+    public void test() {
+        Student student = mock(Student.class);
+        when(student.getId()).thenReturn("20191116");
+        assertEquals("20191116",student.getId());
+    }
+
+    // 返回多个值
+    @Test
+    public void test_more_than_one_return_val(){
+        Iterator iterator = mock(Iterator.class);
+        when(iterator.next()).thenReturn("first").thenReturn("second");
+        assertEquals("first",iterator.next());
+        assertEquals("second",iterator.next());
+    }
+
+
+    // 如何根据输入来返回值
+    @Test
+    public void testReturnValueDependentOnMethodParameter()  {
+        Comparable c= mock(Comparable.class);
+        when(c.compareTo("Mockito")).thenReturn(1);
+        when(c.compareTo("Intellij")).thenReturn(2);
+        assertEquals(1,c.compareTo("Mockito"));
+    }
+
+    // 如何让返回值不依赖于输入
+    @Test
+    public void test_return_value_in_dependent_on_method_parameter()  {
+        Comparable c= mock(Comparable.class);
+        when(c.compareTo(anyInt())).thenReturn(-1);
+        assertEquals(-1 ,c.compareTo(9));
+    }
+
+    // 根据参数类型来返回值
+    @Test
+    public void testReturnValueInDependentOnMethodParameter()  {
+        Comparable c= mock(Comparable.class);
+        when(c.compareTo(isA(Student.class))).thenReturn(0);
+        assertEquals(0 ,c.compareTo(new Student()));
+    }
+
+```
+
+<table><tr><td bgcolor=#FFE4C4>对于无返回值的函数，我们可以使用doReturn(...).when(...).methodCall来获得类似的效果。</td></tr></table>
+
+例如我们想在调用某些无返回值函数的时候抛出异常，那么可以使用doThrow方法.
+
+example：
+
+```
+	/**
+     * doReturn(...).when(...).methodCall
+     */
+    @Test(expected = IOException.class)
+    public void   test_for_ioException() throws IOException {
+        OutputStream outputStream=mock(OutputStream.class);
+        doThrow(new IOException()).when(outputStream).close();
+        OutputStreamWriter streamWriter= new OutputStreamWriter(outputStream);
+        streamWriter.close();
+    }
+```
+
+- 验证mock对象方法是否被调用
+
+<table><tr><td bgcolor=#FFE4C4>Mockito能够跟踪mock对象的所有方法调用及参数。你可以使用verify()方法来验证方法在传入特定参数时是否被调用。这种方式的测试称为行为测试，行为测试并不会检查函数的返回值，而是检查传入指定参数时方法是否被调用.</td></tr></table>
+
+example：
+
+```
+	@Test
+    public void verify_mock_method_and_special_param(){
+        Student student = mock(Student.class);
+        when(student.getId()).thenReturn("2019");
+        student.getId();
+        student.getId();
+        student.learing("1314");
+        // verify(student,times(2)).getId();
+        //验证方法是否被调用两次
+        verify(student,times(2)).getId();
+        // 查看在传入参数为1314的时候方法是否被调用
+        verify(student).learing(ArgumentMatchers.eq("1314"));
+
+        // 其他用来验证函数是否被调用的方法
+        //验证方法是否调用了从没有调用
+        verify(student, never()).learing("never called");
+        //验证方法是否调用了至少一次
+        verify(student, atLeastOnce()).learing("called at least once");
+        //验证方法是否调用了至少几次
+        verify(student, atLeast(2)).learing("called at least twice");
+        //验证方法是否调用了5次
+        verify(student, times(5)).learing("called five times");
+        //验证方法是否调用了最多几次
+        verify(student, atMost(3)).learing("called at most 3 times");
+    }
+```
+
+- 使用Spy封装JAVA对象
+
+<table><tr><td bgcolor=#FFE4C4>	@Spy或者spy()方法可以用来封装java对象，被封装后，除非特殊声明(打桩stub)，否则都会真正调用对象里面的每一个方法</td></tr></table>
+
+example：
+
+```
+       
+    @Test
+    public void spy_test(){
+        LinkedList<String> linkedList = new LinkedList<>();
+        LinkedList<String> spy = spy(linkedList);
+        //会调用真实对象的get(0)方法，linkedList 为空， throws IndexOutOfBoundsException
+        when(spy.get(0)).thenReturn("foo");
+
+        //可以采用doReturn() 进行Stub(打桩)
+        doReturn("foo").when(spy).get(0);
+    }
+```
+
+
+
