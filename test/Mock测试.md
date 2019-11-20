@@ -1,10 +1,8 @@
-
-
 ### Mock测试
 
-mockito官网：http://mockito.org
 API文档：http://docs.mockito.googlecode.com/hg/org/mockito/Mockito.html
 项目源码：https://github.com/mockito/mock
+mockito官网：http://mockito.org
 
 ### 什么是Mock
 Mock的中文译为仿造的、模拟的、虚假的，对测试框架而言就是构造一个模拟/虚假的对象(替身,Mock对象)，使测试能顺利进行下去.
@@ -54,7 +52,6 @@ Mockito是一个流行的mock框架，可以和JUnit一起结合使用，Mockito
 -  模拟并替换测试代码中外部依赖
 -  执行测试代码
 -  验证测试代码是否被正确的执行  
-
 ![mock_execute_test](./mock_execute_test.png)
 
 
@@ -127,7 +124,6 @@ dependencies { testCompile "org.mockito:mockito-core:2.0.57-beta" }
     }
 ```
 <table bgcolor= MintCream><tr><td>Deep Mock: 简单说就是在mock对象时，将mock对象所调用的返回值一起mock,看个例子就明白了:</td></tr></table>
-
 ```
 @Data
 public class Student {
@@ -160,10 +156,12 @@ public class DeepMockTest {
 }
 ```
 
-<table bgcolor= MintCream><tr><td>如上代码所示，Student对象是已经通过@Mock进行mock的，当调用student.getCourse()正常情况下应该返回null，那么调用student.getCourse().info()此时会NPE！而Mockito提供了一种方式--Deep Mock，支持在mock对象时将mock对象的返回值也进行mock.
+<table bgcolor= MintCream><tr><td>
+如上代码所示，Student对象是已经通过@Mock进行mock的，当调用student.getCourse()正常情况下应该返回null，那么调用student.getCourse().info()此时会NPE！而Mockito提供了一种方式--Deep Mock，支持在mock对象时将mock对象的返回值也进行mock.
 <br/>使用方法如下：
 <br/>@Mock是通过添加一个属性answer = Answers.RETURNS_DEEP_STUBS
-<br/>mock静态方法是通过 mock(Student.class,RETURNS_DEEP_STUBS);</td></tr></table>
+<br/>mock静态方法是通过 mock(Student.class,RETURNS_DEEP_STUBS);
+</td></tr></table>
 
 - 配置Mock(Stubbing)
 
@@ -173,7 +171,6 @@ public class DeepMockTest {
 当你多次调用函数的时候，Mockito 会根据你定义的先后顺序来返回返回值。Mocks 还可以根据传入参数的不同来定义不同的返回值。譬如说你的函数可以将`anyString` 或者 `anyInt`作为输入参数，然后定义其特定的放回值。
 
 example：
-
 ```
 	@Test
     public void test() {
@@ -190,7 +187,6 @@ example：
         assertEquals("first",iterator.next());
         assertEquals("second",iterator.next());
     }
-
 
     // 如何根据输入来返回值
     @Test
@@ -220,7 +216,6 @@ example：
 ```
 
 <table><tr><td bgcolor=MintCream>小细节：在使用Wildcard时，建议先使用reset销毁之前Stubbing，如使用anyXXX()、any()、isA()、eq()等通配符之前最后先销毁之前的Stubbing行为.如下所示：</td></tr></table>
-
 ```
 	@Test
     public void test_any_reset(){
@@ -235,11 +230,8 @@ example：
 ```
 
 <table><tr><td bgcolor=#FFE4C4>对于无返回值的函数，我们可以使用doReturn(...).when(...).methodCall来获得类似的效果。</td></tr></table>
-
 例如我们想在调用某些无返回值函数的时候抛出异常，那么可以使用doThrow方法.
-
 example：
-
 ```
 	/**
      * doReturn(...).when(...).methodCall
@@ -254,10 +246,8 @@ example：
 ```
 
 - 验证mock对象方法是否被调用
-
 <table><tr><td bgcolor=#FFE4C4>Mockito能够跟踪mock对象的所有方法调用及参数。你可以使用verify()方法来验证方法在传入特定参数时是否被调用。这种方式的测试称为行为测试，行为测试并不会检查函数的返回值，而是检查传入指定参数时方法是否被调用.</td></tr></table>
 example：
-
 ```
 	@Test
     public void verify_mock_method_and_special_param(){
@@ -287,12 +277,9 @@ example：
 ```
 
 - 使用Spy封装JAVA对象
-
 <table><tr><td bgcolor=#FFE4C4>	@Spy或者spy()方法可以用来封装java对象，被封装后，除非特殊声明(打桩Stubbing)，否则都会真正调用对象里面的每一个方法</td></tr></table>
 example：
-
 ```
-       
     @Test
     public void spy_test(){
         LinkedList<String> linkedList = new LinkedList<>();
@@ -304,5 +291,3 @@ example：
         doReturn("foo").when(spy).get(0);
     }
 ```
-
-- Answers
