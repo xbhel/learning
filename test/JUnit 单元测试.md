@@ -72,7 +72,7 @@ public class SimpleTest {
 ```
 运行方式：右键->Run As->JUnit Test
 测试报告：
-![test_report](./test_report.png)
+![test_report](./images/test_report.png)
 
 - 0：测试类名称
 - 1：测试未通过数量、测试通过数量
@@ -125,7 +125,7 @@ public void timeout() throws InterruptedException {
 }
 ```
 测试报告：
-![test_timeout](./test_timeout.png)
+![test_timeout](./images/test_timeout.png)
 
 ```
 expected：
@@ -136,7 +136,7 @@ public  void expected(){
 }
 ```
 测试报告：
-![test_expected](./test_expected.png)
+![test_expected](./images/test_expected.png)
 
 ### 参数化测试
 JUnit4引入了一个新的功能参数化测试.参数化测试允许开发人员使用不同的值反复允许同一个测试。你将遵循5个步骤来创建参数化测试：

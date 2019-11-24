@@ -9,10 +9,11 @@ Mock的中文译为仿造的、模拟的、虚假的，对测试框架而言就�
 
 ### 为什么需要
 对单元测试的补充；单元测试的思路是在不涉及依赖关系的情况下测试代码(隔离性),所以测试代码与其他类或者系统的关系应该尽量被消除。一个可行的消除方法是替换掉依赖类(测试替换)，也就是说我们可以使用替身(mock)来替换掉真正的依赖对象.如：
-![mock_depend](./mock_depend.png)
+![mock_depend](./images/mock_depend.png)
 为了测试Class A，需要隔离Class B、Class C，因此需要Mock B和C，如下：
-![mock_obj](./mock_obj.png)
+![mock_obj](./images/mock_obj.png)
 由图可知：
+
 - mock对象就是在调试期间用来作为真实对象的替代品
 - mock测试可以在测试过程中，对那些不易构建的对象用一个虚拟对象来代替测试的方法
 
@@ -52,7 +53,7 @@ Mockito是一个流行的mock框架，可以和JUnit一起结合使用，Mockito
 -  模拟并替换测试代码中外部依赖
 -  执行测试代码
 -  验证测试代码是否被正确的执行  
-![mock_execute_test](./mock_execute_test.png)
+![mock_execute_test](./images/mock_execute_test.png)
 
 
 ### 添加Mockito依赖
