@@ -173,6 +173,7 @@ public class DeepMockTest {
 当你多次调用函数的时候，Mockito 会根据你定义的先后顺序来返回返回值。Mocks 还可以根据传入参数的不同来定义不同的返回值。譬如说你的函数可以将`anyString` 或者 `anyInt`作为输入参数，然后定义其特定的放回值。
 
 example：
+
 ```
 	@Test
     public void test() {
@@ -218,6 +219,7 @@ example：
 ```
 
 <table><tr><td bgcolor=MintCream>小细节：在使用Wildcard时，建议先使用reset销毁之前Stubbing，如使用anyXXX()、any()、isA()、eq()等通配符之前最后先销毁之前的Stubbing行为.如下所示：</td></tr></table>
+
 ```
 	@Test
     public void test_any_reset(){
@@ -234,6 +236,7 @@ example：
 <table><tr><td bgcolor=#FFE4C4>对于无返回值的函数，我们可以使用doReturn(...).when(...).methodCall来获得类似的效果。</td></tr></table>
 例如我们想在调用某些无返回值函数的时候抛出异常，那么可以使用doThrow方法.
 example：
+
 ```
 	/**
      * doReturn(...).when(...).methodCall
@@ -250,6 +253,7 @@ example：
 - 验证mock对象方法是否被调用
 <table><tr><td bgcolor=#FFE4C4>Mockito能够跟踪mock对象的所有方法调用及参数。你可以使用verify()方法来验证方法在传入特定参数时是否被调用。这种方式的测试称为行为测试，行为测试并不会检查函数的返回值，而是检查传入指定参数时方法是否被调用.</td></tr></table>
 example：
+
 ```
 	@Test
     public void verify_mock_method_and_special_param(){
@@ -281,6 +285,7 @@ example：
 - 使用Spy封装JAVA对象
 <table><tr><td bgcolor=#FFE4C4>	@Spy或者spy()方法可以用来封装java对象，被封装后，除非特殊声明(打桩Stubbing)，否则都会真正调用对象里面的每一个方法</td></tr></table>
 example：
+
 ```
     @Test
     public void spy_test(){
