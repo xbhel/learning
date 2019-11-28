@@ -125,6 +125,7 @@ dependencies { testCompile "org.mockito:mockito-core:2.0.57-beta" }
     }
 ```
 <table bgcolor= MintCream><tr><td>Deep Mock: 简单说就是在mock对象时，将mock对象所调用的返回值一起mock,看个例子就明白了:</td></tr></table>
+
 ```
 @Data
 public class Student {
